@@ -208,8 +208,22 @@ textarea{resize:none;min-height:72px;}
 
   <div class="card">
     <div class="card-title">📋 Bill Details &amp; Customer</div>
+
+    <span class="field-label">Farm Name</span>
+    <div class="custom-select-wrap">
+      <select id="farmSelect" onchange="onFarmChange()">
+        <option value="">-- Select Farm --</option>
+        <option value="Joshi">Joshi</option>
+        <option value="Navrangi">Navrangi</option>
+        <option value="Gurav">Gurav</option>
+        <option value="Shirgaon">Shirgaon</option>
+        <option value="Jaigad">Jaigad</option>
+      </select>
+    </div>
+
     <span class="field-label">Bill Number</span>
-    <input type="text" id="billNoDisplay" placeholder="Auto-generated" readonly style="background:#f5f5f5;color:var(--subtle);cursor:default;">
+    <input type="text" id="billNoDisplay" placeholder="Select farm first" readonly style="background:#f5f5f5;color:var(--subtle);cursor:default;">
+
     <span class="field-label">Customer Name</span>
     <input type="text" id="custName" placeholder="Enter customer name" autocomplete="off">
     <span class="field-label">Address</span>
@@ -332,15 +346,21 @@ function switchTab(tab){
   if(tab==='history')renderHistory();
 }
 
-// ── Bill Number Logic (global sequential) ──
-function getGlobalCounter(){return parseInt(localStorage.getItem('billCounter_global')||'0');}
-function incrementGlobalCounter(){const n=getGlobalCounter()+1;localStorage.setItem('billCounter_global',String(n));return n;}
-function peekNextBillNo(){return 'BILL/'+(getGlobalCounter()+1);}
-
-// Show bill no on load
-window.addEventListener('DOMContentLoaded',()=>{
-  document.getElementById('billNoDisplay').value=peekNextBillNo();
-});
+// ── Farm & Bill Number Logic (per-farm sequential) ──
+const FARMS={
+  'Joshi':{prefix:'Jo'},
+  'Navrangi':{prefix:'Na'},
+  'Gurav':{prefix:'Gu'},
+  'Shirgaon':{prefix:'Sh'},
+  'Jaigad':{prefix:'Ja'}
+};
+function getFarmCounter(farm){return parseInt(localStorage.getItem('billCounter_'+farm)||'0');}
+function incrementFarmCounter(farm){const n=getFarmCounter(farm)+1;localStorage.setItem('billCounter_'+farm,String(n));return n;}
+function peekNextBillNo(farm){if(!farm||!FARMS[farm])return'';return FARMS[farm].prefix+'/'+(getFarmCounter(farm)+1);}
+function onFarmChange(){
+  const farm=document.getElementById('farmSelect').value;
+  document.getElementById('billNoDisplay').value=farm?peekNextBillNo(farm):'';
+}
 
 // ── App Data ──
 const TYPES=['1 Dz Box','2 Dz Box','4 Dz Box','5 Dz Box','6 Dz Box'];
@@ -392,11 +412,13 @@ function validItems(){return items.filter(i=>i.typeIdx!==''&&parseFloat(i.qty)>0
 let currentBillData=null;
 
 function previewBill(){
+  const farm=document.getElementById('farmSelect').value;
+  if(!farm){alert('Please select a Farm!');return;}
   const name=document.getElementById('custName').value.trim();
   if(!name){alert('Please enter customer name!');return;}
   if(!validItems().length){alert('Please fill Type, Qty and Rate for at least one item!');return;}
 
-  const bno=peekNextBillNo();
+  const bno=peekNextBillNo(farm);
   const bdate=billDate();
 
   document.getElementById('billNo').textContent=bno;
@@ -423,7 +445,7 @@ function previewBill(){
   document.getElementById('bGrand').textContent='₹ '+grand.toFixed(2);
 
   currentBillData={
-    id:bno,farm:'',date:bdate,timestamp:Date.now(),
+    id:bno,farm,date:bdate,timestamp:Date.now(),
     name,addr:document.getElementById('custAddress').value.trim(),mob,
     items:validItems().map(i=>({type:TYPES[i.typeIdx],qty:parseFloat(i.qty),rate:parseFloat(i.rate),total:i.total})),
     subtotal:sub,transport:tr,grand,saved:false
@@ -436,9 +458,9 @@ function closeModal(){document.getElementById('billModal').classList.remove('ope
 // ── Save Bill to History (only once per bill) ──
 function saveBillToHistory(){
   if(!currentBillData||currentBillData.saved)return;
-  incrementGlobalCounter();
+  incrementFarmCounter(currentBillData.farm);
   currentBillData.saved=true;
-  document.getElementById('billNoDisplay').value=peekNextBillNo();
+  document.getElementById('billNoDisplay').value=peekNextBillNo(currentBillData.farm);
   // Save to history
   const bills=getBills();
   bills.unshift(currentBillData);
@@ -466,6 +488,7 @@ function renderHistory(){
       </div>
       <div class="bill-record-meta">
         <span class="bill-record-no">${b.id}</span>
+        <span>🌿 ${b.farm||'–'}</span>
         <span>${b.date}</span>
         <span>${b.items.length} item${b.items.length>1?'s':''}</span>
       </div>
