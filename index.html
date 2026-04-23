@@ -207,23 +207,9 @@ textarea{resize:none;min-height:72px;}
 <div class="page">
 
   <div class="card">
-    <div class="card-title">🌿 Farm & Customer Details</div>
-
-    <span class="field-label">Farm Name</span>
-    <div class="custom-select-wrap">
-      <select id="farmSelect" onchange="onFarmChange()">
-        <option value="">-- Select Farm --</option>
-        <option value="Joshi">Joshi</option>
-        <option value="Navrangi">Navrangi</option>
-        <option value="Gurav">Gurav</option>
-        <option value="Shirgaon">Shirgaon</option>
-        <option value="Jaigad">Jaigad</option>
-      </select>
-    </div>
-
+    <div class="card-title">📋 Bill Details &amp; Customer</div>
     <span class="field-label">Bill Number</span>
-    <input type="text" id="billNoDisplay" placeholder="Select farm first" readonly style="background:#f5f5f5;color:var(--subtle);cursor:default;">
-
+    <input type="text" id="billNoDisplay" placeholder="Auto-generated" readonly style="background:#f5f5f5;color:var(--subtle);cursor:default;">
     <span class="field-label">Customer Name</span>
     <input type="text" id="custName" placeholder="Enter customer name" autocomplete="off">
     <span class="field-label">Address</span>
@@ -295,7 +281,6 @@ textarea{resize:none;min-height:72px;}
     </div>
     <div class="bill-meta">
       <span>Bill No: <strong id="billNo">–</strong></span>
-      <span>Farm: <strong id="billFarm">–</strong></span>
       <span>Date: <strong id="billDate">–</strong></span>
     </div>
     <div class="bill-body">
@@ -347,36 +332,15 @@ function switchTab(tab){
   if(tab==='history')renderHistory();
 }
 
-// ── Farm & Bill Number Logic ──
-// FARMS: prefix → full name
-const FARMS={
-  'Joshi':  {prefix:'Jo'},
-  'Navrangi':{prefix:'Na'},
-  'Gurav':  {prefix:'Gu'},
-  'Shirgaon':{prefix:'Sh'},
-  'Jaigad': {prefix:'Ja'}
-};
+// ── Bill Number Logic (global sequential) ──
+function getGlobalCounter(){return parseInt(localStorage.getItem('billCounter_global')||'0');}
+function incrementGlobalCounter(){const n=getGlobalCounter()+1;localStorage.setItem('billCounter_global',String(n));return n;}
+function peekNextBillNo(){return 'BILL/'+(getGlobalCounter()+1);}
 
-function getFarmCounter(farm){
-  const key='billCounter_'+farm;
-  return parseInt(localStorage.getItem(key)||'0');
-}
-function incrementFarmCounter(farm){
-  const key='billCounter_'+farm;
-  const next=getFarmCounter(farm)+1;
-  localStorage.setItem(key,String(next));
-  return next;
-}
-function peekNextBillNo(farm){
-  if(!farm||!FARMS[farm])return'';
-  const next=getFarmCounter(farm)+1;
-  return FARMS[farm].prefix+'/'+next;
-}
-
-function onFarmChange(){
-  const farm=document.getElementById('farmSelect').value;
-  document.getElementById('billNoDisplay').value=farm?peekNextBillNo(farm):'';
-}
+// Show bill no on load
+window.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('billNoDisplay').value=peekNextBillNo();
+});
 
 // ── App Data ──
 const TYPES=['1 Dz Box','2 Dz Box','4 Dz Box','5 Dz Box','6 Dz Box'];
@@ -428,17 +392,14 @@ function validItems(){return items.filter(i=>i.typeIdx!==''&&parseFloat(i.qty)>0
 let currentBillData=null;
 
 function previewBill(){
-  const farm=document.getElementById('farmSelect').value;
-  if(!farm){alert('Please select a Farm!');return;}
   const name=document.getElementById('custName').value.trim();
   if(!name){alert('Please enter customer name!');return;}
   if(!validItems().length){alert('Please fill Type, Qty and Rate for at least one item!');return;}
 
-  const bno=peekNextBillNo(farm);
+  const bno=peekNextBillNo();
   const bdate=billDate();
 
   document.getElementById('billNo').textContent=bno;
-  document.getElementById('billFarm').textContent=farm;
   document.getElementById('billDate').textContent=bdate;
   document.getElementById('bName').textContent=name;
   document.getElementById('bAddr').textContent=document.getElementById('custAddress').value.trim();
@@ -462,7 +423,7 @@ function previewBill(){
   document.getElementById('bGrand').textContent='₹ '+grand.toFixed(2);
 
   currentBillData={
-    id:bno,farm,date:bdate,timestamp:Date.now(),
+    id:bno,farm:'',date:bdate,timestamp:Date.now(),
     name,addr:document.getElementById('custAddress').value.trim(),mob,
     items:validItems().map(i=>({type:TYPES[i.typeIdx],qty:parseFloat(i.qty),rate:parseFloat(i.rate),total:i.total})),
     subtotal:sub,transport:tr,grand,saved:false
@@ -475,11 +436,9 @@ function closeModal(){document.getElementById('billModal').classList.remove('ope
 // ── Save Bill to History (only once per bill) ──
 function saveBillToHistory(){
   if(!currentBillData||currentBillData.saved)return;
-  // Increment counter for this farm
-  incrementFarmCounter(currentBillData.farm);
+  incrementGlobalCounter();
   currentBillData.saved=true;
-  // Update display for next bill
-  document.getElementById('billNoDisplay').value=peekNextBillNo(currentBillData.farm);
+  document.getElementById('billNoDisplay').value=peekNextBillNo();
   // Save to history
   const bills=getBills();
   bills.unshift(currentBillData);
@@ -507,7 +466,6 @@ function renderHistory(){
       </div>
       <div class="bill-record-meta">
         <span class="bill-record-no">${b.id}</span>
-        <span class="bill-record-farm">🌿 ${b.farm||'–'}</span>
         <span>${b.date}</span>
         <span>${b.items.length} item${b.items.length>1?'s':''}</span>
       </div>
@@ -535,9 +493,30 @@ function exportCSV(){
 }
 
 // ────────────────────────────────────────────
-// BLACK & WHITE CANVAS BILL IMAGE
+// INVOICE-FORMAT BILL CANVAS
+// Matches the uploaded invoice template design
 // ────────────────────────────────────────────
-function drawRoundRect(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();}
+
+// Convert number to Indian words
+function numToWords(n){
+  const a=['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine',
+    'Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];
+  const b=['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
+  if(n===0)return'Zero';
+  function inWords(num){
+    if(num<20)return a[num];
+    if(num<100)return b[Math.floor(num/10)]+(num%10?' '+a[num%10]:'');
+    if(num<1000)return a[Math.floor(num/100)]+' Hundred'+(num%100?' '+inWords(num%100):'');
+    if(num<100000)return inWords(Math.floor(num/1000))+' Thousand'+(num%1000?' '+inWords(num%1000):'');
+    if(num<10000000)return inWords(Math.floor(num/100000))+' Lakh'+(num%100000?' '+inWords(num%100000):'');
+    return inWords(Math.floor(num/10000000))+' Crore'+(num%10000000?' '+inWords(num%10000000):'');
+  }
+  const intPart=Math.floor(n);
+  const dec=Math.round((n-intPart)*100);
+  let words=inWords(intPart)+' Rupees';
+  if(dec>0)words+=' and '+inWords(dec)+' Paise';
+  return words+' Only';
+}
 
 function buildBillCanvas(){
   const farm=currentBillData.farm||'';
@@ -551,151 +530,242 @@ function buildBillCanvas(){
   const bno=currentBillData.id;
   const bdate=currentBillData.date;
 
-  const W=750,PAD=44,colW=W-PAD*2,rowH=44;
-  const custLines=[name,addr,mob].filter(Boolean);
-  const custH=custLines.length*26+32;
-  const itemsH=vi.length*rowH+44;
-  const summaryH=(trAmt>0?2:1)*34+80;
-  const H=220+custH+24+itemsH+24+summaryH+80;
+  // ── Canvas dimensions ──
+  const W=794; // A4-ish width
+  const PAD=36;
+  const DPR=2;
+
+  // Fixed row height and min rows (show at least 6 rows for blank lines like template)
+  const ROW_H=42;
+  const MIN_ROWS=6;
+  const numRows=Math.max(vi.length,MIN_ROWS);
+
+  // Sections heights
+  const TOP_BAR=14;
+  const HEADER_H=110;
+  const BILL_INFO_H=50;
+  const CUST_H=70;
+  const TABLE_HEAD_H=38;
+  const TABLE_BODY_H=numRows*ROW_H;
+  const TOTAL_ROW_H=38;
+  const WORDS_H=40;
+  const TERMS_H=38;
+  const SIG_H=52;
+  const BOT_BAR=14;
+
+  const H=TOP_BAR+HEADER_H+BILL_INFO_H+CUST_H+TABLE_HEAD_H+TABLE_BODY_H+TOTAL_ROW_H+WORDS_H+TERMS_H+SIG_H+BOT_BAR+8;
 
   const canvas=document.createElement('canvas');
-  const DPR=2;canvas.width=W*DPR;canvas.height=H*DPR;
-  const ctx=canvas.getContext('2d');ctx.scale(DPR,DPR);
+  canvas.width=W*DPR; canvas.height=H*DPR;
+  const ctx=canvas.getContext('2d');
+  ctx.scale(DPR,DPR);
 
-  // ── White background ──
-  ctx.fillStyle='#FFFFFF';ctx.fillRect(0,0,W,H);
+  // ── Background white ──
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
 
-  // ── Dashed top border ──
-  ctx.strokeStyle='#111';ctx.lineWidth=3;ctx.setLineDash([10,6]);
-  ctx.beginPath();ctx.moveTo(0,3);ctx.lineTo(W,3);ctx.stroke();ctx.setLineDash([]);
+  // ── TOP COLOR BAR (like template) - 3 segments ──
+  // dark blue | medium blue | light blue  → we use dark green | green | light green
+  ctx.fillStyle='#1B4D1B';ctx.fillRect(0,0,W*0.3,TOP_BAR);
+  ctx.fillStyle='#2D6A2D';ctx.fillRect(W*0.3,0,W*0.35,TOP_BAR);
+  ctx.fillStyle='#7CB97C';ctx.fillRect(W*0.65,0,W*0.35,TOP_BAR);
 
-  let y=14;
+  let y=TOP_BAR+10;
 
-  // ── Mango icon (B&W silhouette) ──
-  const mx=W/2-110,my=y+8;
-  // body
-  ctx.fillStyle='#222';
-  ctx.beginPath();ctx.ellipse(mx+18,my+28,16,20,0,0,Math.PI*2);ctx.fill();
-  // highlight
+  // ── HEADER: Left = Company, Right = BILL ──
+  // Left side: mango icon + company name
+  const LX=PAD, RX=W*0.58;
+
+  // Mango silhouette icon
+  const mx=LX, my=y+4;
+  ctx.fillStyle='#1B4D1B';
+  ctx.beginPath();ctx.ellipse(mx+16,my+24,14,18,0,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#3a3';
+  ctx.beginPath();ctx.ellipse(mx+10,my+18,4,6,0,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#1B4D1B';ctx.fillRect(mx+14,my+4,3,8);
+  ctx.beginPath();ctx.moveTo(mx+17,my+6);ctx.quadraticCurveTo(mx+30,my-2,mx+27,my+12);ctx.quadraticCurveTo(mx+22,my+10,mx+17,my+6);ctx.fill();
+
+  // Company Name
+  ctx.fillStyle='#1B4D1B';
+  ctx.font='bold 26px Roboto,Arial,sans-serif';
+  ctx.textAlign='left';
+  ctx.fillText('Shobhna Agro',mx+36,y+30);
+
+  ctx.fillStyle='#444';
+  ctx.font='13px Roboto,Arial,sans-serif';
+  ctx.fillText('Ratnagiri Alphonso Mangoes',mx+36,y+50);
+  ctx.fillText('Ph: 7517750152  |  9011651016',mx+36,y+68);
   ctx.fillStyle='#666';
-  ctx.beginPath();ctx.ellipse(mx+12,my+22,5,7,0,0,Math.PI*2);ctx.fill();
-  // stem
-  ctx.fillStyle='#111';ctx.fillRect(mx+16,my+6,4,8);
-  // leaf
-  ctx.fillStyle='#111';ctx.beginPath();ctx.moveTo(mx+20,my+8);ctx.quadraticCurveTo(mx+36,my-2,mx+32,my+14);ctx.quadraticCurveTo(mx+26,my+11,mx+20,my+8);ctx.fill();
+  ctx.font='12px Roboto,Arial,sans-serif';
+  ctx.fillText('Premium Mango Suppliers',mx+36,y+86);
 
-  // ── Company name ──
-  ctx.fillStyle='#111';ctx.font='bold 36px Roboto,Arial,sans-serif';ctx.textAlign='left';
-  ctx.fillText('Shobhna Agro',W/2-82,y+52);
-  ctx.fillStyle='#555';ctx.font='500 12px Roboto,Arial,sans-serif';
-  ctx.fillText('PREMIUM MANGO SUPPLIERS',W/2-82,y+72);
-  ctx.fillStyle='#333';ctx.font='500 14px Roboto,Arial,sans-serif';
-  ctx.fillText('Ratnagiri Alphonso Mangoes',W/2-82,y+92);
-  ctx.fillStyle='#444';ctx.font='14px Roboto,Arial,sans-serif';ctx.textAlign='center';
-  ctx.fillText('Ph: 7517750152  |  9011651016',W/2,y+116);
+  // Right side: BILL title + bill no + date
+  ctx.fillStyle='#1B4D1B';
+  ctx.font='bold 30px Roboto,Arial,sans-serif';
+  ctx.textAlign='left';
+  ctx.fillText('BILL',RX,y+32);
 
-  y+=136;
+  ctx.fillStyle='#333';
+  ctx.font='13px Roboto,Arial,sans-serif';
+  ctx.fillText('Bill No.',RX,y+56);
+  ctx.font='bold 13px Roboto,Arial,sans-serif';
+  ctx.fillText(bno,RX+60,y+56);
 
-  // ── Thin separator ──
-  ctx.strokeStyle='#aaa';ctx.lineWidth=0.8;ctx.setLineDash([5,4]);
-  ctx.beginPath();ctx.moveTo(PAD,y);ctx.lineTo(W-PAD,y);ctx.stroke();ctx.setLineDash([]);
-  y+=16;
+  ctx.font='13px Roboto,Arial,sans-serif';
+  ctx.fillText('Bill Date:',RX,y+76);
+  ctx.font='bold 13px Roboto,Arial,sans-serif';
+  ctx.fillText(bdate,RX+70,y+76);
 
-  // ── Bill No / Farm / Date row ──
-  ctx.fillStyle='#555';ctx.font='13px Roboto,Arial,sans-serif';ctx.textAlign='left';
-  ctx.fillText('Bill No: ',PAD,y);
+  y+=HEADER_H;
+
+  // ── SEPARATOR LINE ──
+  ctx.strokeStyle='#1B4D1B';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(PAD,y);ctx.lineTo(W-PAD,y);ctx.stroke();
+  y+=8;
+
+  // ── CUSTOMER INFO: Name / Address / Mobile ──
+  ctx.fillStyle='#333';ctx.font='13px Roboto,Arial,sans-serif';ctx.textAlign='left';
+
+  // Name row
+  ctx.fillText('Name',PAD,y+18);
+  ctx.strokeStyle='#aaa';ctx.lineWidth=0.8;
+  ctx.beginPath();ctx.moveTo(PAD+56,y+20);ctx.lineTo(W-PAD,y+20);ctx.stroke();
   ctx.fillStyle='#111';ctx.font='bold 13px Roboto,Arial,sans-serif';
-  ctx.fillText(bno,PAD+56,y);
-  ctx.fillStyle='#555';ctx.font='13px Roboto,Arial,sans-serif';
-  ctx.fillText('Farm: ',PAD+160,y);
-  ctx.fillStyle='#111';ctx.font='bold 13px Roboto,Arial,sans-serif';
-  ctx.fillText(farm,PAD+200,y);
-  ctx.fillStyle='#555';ctx.font='13px Roboto,Arial,sans-serif';ctx.textAlign='right';
-  ctx.fillText('Date: '+bdate,W-PAD,y);
+  ctx.fillText(name,PAD+62,y+17);
 
-  y+=16;
-  // separator
-  ctx.strokeStyle='#aaa';ctx.lineWidth=0.8;ctx.setLineDash([5,4]);
-  ctx.beginPath();ctx.moveTo(PAD,y);ctx.lineTo(W-PAD,y);ctx.stroke();ctx.setLineDash([]);
-  y+=16;
+  y+=28;
+  ctx.fillStyle='#333';ctx.font='13px Roboto,Arial,sans-serif';
+  ctx.fillText('Address',PAD,y+18);
+  ctx.strokeStyle='#aaa';ctx.lineWidth=0.8;
+  ctx.beginPath();ctx.moveTo(PAD+68,y+20);ctx.lineTo(W-PAD,y+20);ctx.stroke();
+  ctx.fillStyle='#111';ctx.font='13px Roboto,Arial,sans-serif';
+  const addrMob=[addr,mob?'Mob: '+mob:''].filter(Boolean).join('   ');
+  ctx.fillText(addrMob,PAD+74,y+17);
 
-  // ── Customer box ──
-  drawRoundRect(ctx,PAD,y,colW,custH,8);
-  ctx.fillStyle='#F5F5F5';ctx.fill();
-  ctx.strokeStyle='#111';ctx.lineWidth=1;ctx.stroke();
-  ctx.fillStyle='#111';ctx.fillRect(PAD,y+8,3,custH-16);
+  y+=CUST_H-28;
 
-  let cy=y+26;
-  ctx.fillStyle='#111';ctx.font='bold 17px Roboto,Arial,sans-serif';ctx.textAlign='left';
-  ctx.fillText(name,PAD+16,cy);cy+=26;
-  if(addr){ctx.fillStyle='#444';ctx.font='14px Roboto,Arial,sans-serif';ctx.fillText(addr,PAD+16,cy);cy+=24;}
-  if(mob){ctx.fillStyle='#444';ctx.font='14px Roboto,Arial,sans-serif';ctx.fillText('Mob: '+mob,PAD+16,cy);}
-  y+=custH+18;
+  // ── TABLE ──
+  const tblX=PAD, tblW=W-PAD*2;
+  // Column widths: S.No | Description | Qty | Rate | Amount
+  const cw=[tblW*0.08, tblW*0.40, tblW*0.12, tblW*0.18, tblW*0.22];
+  const cx=[tblX, tblX+cw[0], tblX+cw[0]+cw[1], tblX+cw[0]+cw[1]+cw[2], tblX+cw[0]+cw[1]+cw[2]+cw[3]];
 
-  // ── Items table header ──
-  const tblW=colW;
-  const cols=[tblW*0.34,tblW*0.14,tblW*0.25,tblW*0.27];
-  const colX=[PAD,PAD+cols[0],PAD+cols[0]+cols[1],PAD+cols[0]+cols[1]+cols[2]];
-
-  ctx.fillStyle='#111';ctx.fillRect(PAD,y,tblW,40);
-  const headers=['Type','Qty','Rate (\u20B9)','Total (\u20B9)'];
+  // Table header row
+  ctx.fillStyle='#1B4D1B';
+  ctx.fillRect(tblX,y,tblW,TABLE_HEAD_H);
   ctx.fillStyle='#fff';ctx.font='bold 13px Roboto,Arial,sans-serif';
-  headers.forEach((h,i)=>{ctx.textAlign=i===0?'left':'center';const cx=i===0?colX[i]+12:colX[i]+cols[i]/2;ctx.fillText(h,cx,y+26);});
-  y+=40;
-
-  // ── Table rows ──
-  vi.forEach((item,idx)=>{
-    const rowY=y+idx*rowH;
-    ctx.fillStyle=idx%2===0?'#FFFFFF':'#F5F5F5';
-    ctx.fillRect(PAD,rowY,tblW,rowH);
-    ctx.strokeStyle='#ccc';ctx.lineWidth=0.5;
-    ctx.beginPath();ctx.moveTo(PAD,rowY+rowH);ctx.lineTo(PAD+tblW,rowY+rowH);ctx.stroke();
-    const cells=[item.type,String(item.qty),'\u20B9'+item.rate.toFixed(2),'\u20B9'+item.total.toFixed(2)];
-    cells.forEach((cell,i)=>{
-      ctx.textAlign=i===0?'left':'center';
-      const cx=i===0?colX[i]+12:colX[i]+cols[i]/2;
-      ctx.fillStyle='#111';
-      ctx.font=i===3?'bold 14px Roboto,Arial,sans-serif':'14px Roboto,Arial,sans-serif';
-      ctx.fillText(cell,cx,rowY+27);
-    });
+  const headers=['S.No.','Description','Qty.','Rate','Amount'];
+  headers.forEach((h,i)=>{
+    ctx.textAlign= i===1?'left':'center';
+    const hx= i===1? cx[i]+8 : cx[i]+cw[i]/2;
+    ctx.fillText(h,hx,y+TABLE_HEAD_H/2+5);
   });
-  y+=vi.length*rowH;
-  // table border
-  ctx.strokeStyle='#ccc';ctx.lineWidth=1;ctx.strokeRect(PAD,y-vi.length*rowH-40,tblW,vi.length*rowH+40);
-  y+=18;
 
-  // ── Summary ──
-  ctx.strokeStyle='#aaa';ctx.lineWidth=1;
-  ctx.beginPath();ctx.moveTo(PAD,y);ctx.lineTo(W-PAD,y);ctx.stroke();y+=14;
-  const drawRow=(lbl,val)=>{
-    ctx.fillStyle='#666';ctx.font='15px Roboto,Arial,sans-serif';ctx.textAlign='left';ctx.fillText(lbl,PAD,y);
-    ctx.fillStyle='#111';ctx.font='600 15px Roboto,Arial,sans-serif';ctx.textAlign='right';ctx.fillText(val,W-PAD,y);
-    y+=34;
-  };
-  drawRow('Subtotal','\u20B9 '+sub.toFixed(2));
-  if(trAmt>0)drawRow('Transport Charges','\u20B9 '+trAmt.toFixed(2));
+  // Draw vertical column lines in header
+  ctx.strokeStyle='rgba(255,255,255,0.3)';ctx.lineWidth=1;
+  for(let i=1;i<5;i++){
+    ctx.beginPath();ctx.moveTo(cx[i],y);ctx.lineTo(cx[i],y+TABLE_HEAD_H);ctx.stroke();
+  }
+  y+=TABLE_HEAD_H;
 
-  // ── Grand Total box (black) ──
-  const gtH=60;
-  drawRoundRect(ctx,PAD,y,colW,gtH,10);
-  ctx.fillStyle='#111';ctx.fill();
-  ctx.fillStyle='#fff';ctx.font='bold 18px Roboto,Arial,sans-serif';ctx.textAlign='left';
-  ctx.fillText('Total Amount to Pay',PAD+18,y+38);
-  ctx.fillStyle='#fff';ctx.font='bold 24px Roboto,Arial,sans-serif';ctx.textAlign='right';
-  ctx.fillText('\u20B9 '+grand.toFixed(2),W-PAD-18,y+40);
-  y+=gtH+20;
+  // Table body rows
+  const tblBodyTop=y;
+  for(let r=0;r<numRows;r++){
+    const rowY=y+r*ROW_H;
+    ctx.fillStyle=r%2===0?'#fff':'#f9f9f9';
+    ctx.fillRect(tblX,rowY,tblW,ROW_H);
 
-  // ── Footer ──
-  ctx.strokeStyle='#bbb';ctx.lineWidth=1;ctx.setLineDash([5,4]);
-  ctx.beginPath();ctx.moveTo(PAD,y);ctx.lineTo(W-PAD,y);ctx.stroke();ctx.setLineDash([]);y+=16;
-  ctx.textAlign='center';ctx.fillStyle='#555';ctx.font='14px Roboto,Arial,sans-serif';
-  ctx.fillText('Thank you for choosing Shobhna Agro!',W/2,y);y+=20;
-  ctx.fillStyle='#777';ctx.font='13px Roboto,Arial,sans-serif';
-  ctx.fillText('Fresh Ratnagiri Alphonso Mangoes, Delivered with Love.',W/2,y);
+    if(r<vi.length){
+      const item=vi[r];
+      ctx.fillStyle='#111';
+      // S.No
+      ctx.font='13px Roboto,Arial,sans-serif';ctx.textAlign='center';
+      ctx.fillText(String(r+1),cx[0]+cw[0]/2,rowY+ROW_H/2+5);
+      // Description
+      ctx.textAlign='left';
+      ctx.fillText(item.type,cx[1]+8,rowY+ROW_H/2+5);
+      // Qty
+      ctx.textAlign='center';
+      ctx.fillText(String(item.qty),cx[2]+cw[2]/2,rowY+ROW_H/2+5);
+      // Rate
+      ctx.fillText('\u20B9'+item.rate.toFixed(2),cx[3]+cw[3]/2,rowY+ROW_H/2+5);
+      // Amount
+      ctx.font='bold 13px Roboto,Arial,sans-serif';
+      ctx.fillText('\u20B9'+item.total.toFixed(2),cx[4]+cw[4]/2,rowY+ROW_H/2+5);
+    }
 
-  // ── Dashed bottom border ──
-  ctx.strokeStyle='#111';ctx.lineWidth=3;ctx.setLineDash([10,6]);
-  ctx.beginPath();ctx.moveTo(0,H-4);ctx.lineTo(W,H-4);ctx.stroke();ctx.setLineDash([]);
+    // Row bottom border
+    ctx.strokeStyle='#ddd';ctx.lineWidth=0.5;
+    ctx.beginPath();ctx.moveTo(tblX,rowY+ROW_H);ctx.lineTo(tblX+tblW,rowY+ROW_H);ctx.stroke();
+  }
+
+  // Vertical lines for all table body
+  ctx.strokeStyle='#ccc';ctx.lineWidth=0.8;
+  for(let i=1;i<5;i++){
+    ctx.beginPath();ctx.moveTo(cx[i],tblBodyTop);ctx.lineTo(cx[i],tblBodyTop+numRows*ROW_H);ctx.stroke();
+  }
+  // Outer border
+  ctx.strokeStyle='#999';ctx.lineWidth=1;
+  ctx.strokeRect(tblX,tblBodyTop-TABLE_HEAD_H,tblW,TABLE_HEAD_H+numRows*ROW_H);
+
+  y+=numRows*ROW_H;
+
+  // ── TOTAL ROW ──
+  // Transport line (if any)
+  if(trAmt>0){
+    ctx.fillStyle='#f0f0f0';ctx.fillRect(tblX,y,tblW,ROW_H);
+    ctx.strokeStyle='#ccc';ctx.lineWidth=0.5;
+    ctx.strokeRect(tblX,y,tblW,ROW_H);
+    ctx.fillStyle='#333';ctx.font='13px Roboto,Arial,sans-serif';ctx.textAlign='center';
+    ctx.fillText('Transport',cx[3]+cw[3]/2,y+ROW_H/2+5);
+    ctx.font='bold 13px Roboto,Arial,sans-serif';
+    ctx.fillText('\u20B9'+trAmt.toFixed(2),cx[4]+cw[4]/2,y+ROW_H/2+5);
+    y+=ROW_H;
+  }
+
+  // Total row
+  ctx.fillStyle='#E8F5E9';ctx.fillRect(tblX,y,tblW,TOTAL_ROW_H);
+  ctx.strokeStyle='#999';ctx.lineWidth=1;ctx.strokeRect(tblX,y,tblW,TOTAL_ROW_H);
+  // "Total" label spans S.No+Description+Qty+Rate
+  ctx.fillStyle='#1B4D1B';ctx.font='bold 14px Roboto,Arial,sans-serif';ctx.textAlign='right';
+  ctx.fillText('Total',cx[4]-10,y+TOTAL_ROW_H/2+5);
+  // Amount
+  ctx.textAlign='center';ctx.fillStyle='#111';ctx.font='bold 15px Roboto,Arial,sans-serif';
+  ctx.fillText('\u20B9'+grand.toFixed(2),cx[4]+cw[4]/2,y+TOTAL_ROW_H/2+5);
+  // vertical line before amount col
+  ctx.strokeStyle='#999';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(cx[4],y);ctx.lineTo(cx[4],y+TOTAL_ROW_H);ctx.stroke();
+  y+=TOTAL_ROW_H;
+
+  // ── RUPEES IN WORDS ──
+  ctx.strokeStyle='#ccc';ctx.lineWidth=0.8;
+  ctx.strokeRect(tblX,y,tblW,WORDS_H);
+  ctx.fillStyle='#111';ctx.font='13px Roboto,Arial,sans-serif';ctx.textAlign='left';
+  ctx.fillText('Rupees in words:',tblX+10,y+16);
+  ctx.fillStyle='#1B4D1B';ctx.font='bold 13px Roboto,Arial,sans-serif';
+  ctx.fillText(numToWords(grand),tblX+130,y+16);
+  y+=WORDS_H;
+
+  // ── TERMS & CONDITIONS ──
+  ctx.strokeStyle='#ccc';ctx.lineWidth=0.8;
+  ctx.strokeRect(tblX,y,tblW,TERMS_H);
+  ctx.fillStyle='#111';ctx.font='bold 12px Roboto,Arial,sans-serif';ctx.textAlign='left';
+  ctx.fillText('Terms & Conditions:',tblX+10,y+16);
+  ctx.fillStyle='#555';ctx.font='11px Roboto,Arial,sans-serif';
+  ctx.fillText('All sales are final. Goods once sold will not be taken back. Subject to local jurisdiction.',tblX+10,y+30);
+  y+=TERMS_H;
+
+  // ── SIGNATURE ROW ──
+  ctx.strokeStyle='#ccc';ctx.lineWidth=0.8;
+  ctx.strokeRect(tblX,y,tblW,SIG_H);
+  ctx.fillStyle='#333';ctx.font='13px Roboto,Arial,sans-serif';ctx.textAlign='right';
+  ctx.fillText('Signature',tblX+tblW-20,y+SIG_H-12);
+  y+=SIG_H;
+
+  // ── BOTTOM COLOR BAR ──
+  y+=6;
+  ctx.fillStyle='#1B4D1B';ctx.fillRect(0,y,W*0.3,BOT_BAR);
+  ctx.fillStyle='#2D6A2D';ctx.fillRect(W*0.3,y,W*0.35,BOT_BAR);
+  ctx.fillStyle='#7CB97C';ctx.fillRect(W*0.65,y,W*0.35,BOT_BAR);
 
   return canvas;
 }
