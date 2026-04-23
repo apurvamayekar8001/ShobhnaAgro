@@ -1,0 +1,54 @@
+.header {
+    background: linear-gradient(to right, #2d5016, #558b2f);
+    padding: 20px;
+    text-align: center;
+}
+
+.header img {
+    animation: logoAnimation 2s infinite;
+}
+
+@keyframes logoAnimation {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.hero {
+    background-image: url('path/to/hero-image.jpg');
+    height: 400px;
+    background-size: cover;
+    animation: rotateAnimation 10s infinite linear;
+}
+
+@keyframes rotateAnimation {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+form {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 8px;
+}
+
+form input, form select, form textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+footer {
+    background-color: #2d5016;
+    color: white;
+    text-align: center;
+    padding: 10px;
+}
+
+@media (max-width: 600px) {
+    .hero {
+        height: 200px;
+    }
+}
