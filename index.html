@@ -3,35 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shobhna Agro Bill Generator</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="manifest" href="manifest.json">
-    <script src="script.js" defer></script>
+    <title>Bill Generator - Shobhna Agro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .billing-details {
+            margin-bottom: 20px;
+        }
+        .item-table {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .item-table, .item-table th, .item-table td {
+            border: 1px solid #ddd;
+            border-collapse: collapse;
+        }
+        .item-table th, .item-table td {
+            padding: 8px;
+            text-align: left;
+        }
+        .item-table th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .button {
+            background-color: #FF9800;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <div class="header-content">
-            <img src="images/image1.svg" alt="Shobhna Agro Logo" class="logo">
-            <h1>Shobhna Agro Bill Generator</h1>
+    <div class="container">
+        <h1>Shobhna Agro Bill Generator</h1>
+        <div class="billing-details">
+            <label for="customer-name">Customer Name:</label>
+            <input type="text" id="customer-name"/><br/><br/>
+            <label for="customer-contact">Contact Info:</label>
+            <input type="text" id="customer-contact"/><br/><br/>
         </div>
-    </header>
-    <main>
-        <div class="hero">
-            <img src="images/image2.svg" alt="Fresh Mango" class="hero-image">
-        </div>
-        <form id="billForm">
-            <label for="customerName">Customer Name:</label>
-            <input type="text" id="customerName" required>
-            <label for="items">Items (comma separated):</label>
-            <input type="text" id="items" required>
-            <label for="amount">Total Amount:</label>
-            <input type="number" id="amount" required>
-            <button type="submit">Generate Bill</button>
-        </form>
-        <div id="billPreview"></div>
-    </main>
-    <footer>
-        <p>&copy; 2026 Shobhna Agro. All rights reserved.</p>
-    </footer>
+        <table class="item-table">
+            <thead>
+                <tr>
+                    <th>Item Name</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody id="items-body">
+                <tr>
+                    <td><input type="text" class="item-name"/></td>
+                    <td><input type="number" class="item-quantity" value="1"/></td>
+                    <td><input type="number" class="item-price" value="0"/></td>
+                    <td><button onclick="removeItem(this)">Remove</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <button class="button" onclick="addItem()">Add Item</button>
+        <br/><br/>
+        <h3>Total: <span id="total">0</span></h3>
+        <button class="button" onclick="generateBill()">Generate Bill</button>
+        <button class="button" onclick="printBill()">Print Bill</button>
+    </div>
+    <script>
+        function addItem() {
+            const tableBody = document.getElementById('items-body');
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td><input type="text" class="item-name"/></td>
+                <td><input type="number" class="item-quantity" value="1"/></td>
+                <td><input type="number" class="item-price" value="0"/></td>
+                <td><button onclick="removeItem(this)">Remove</button></td>
+            `;
+            tableBody.appendChild(newRow);
+        }
+        function removeItem(button) {
+            const row = button.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+            calculateTotal();
+        }
+        function calculateTotal() {
+            const itemNames = document.getElementsByClassName('item-name');
+            const itemQuantities = document.getElementsByClassName('item-quantity');
+            const itemPrices = document.getElementsByClassName('item-price');
+            let total = 0;
+            for (let i = 0; i < itemNames.length; i++) {
+                total += itemQuantities[i].value * itemPrices[i].value;
+            }
+            document.getElementById('total').innerText = total;
+        }
+        function generateBill() {
+            const customerName = document.getElementById('customer-name').value;
+            const customerContact = document.getElementById('customer-contact').value;
+            let bill = `Bill for ${customerName} (Contact: ${customerContact})\n`;
+            const itemNames = document.getElementsByClassName('item-name');
+            const itemQuantities = document.getElementsByClassName('item-quantity');
+            const itemPrices = document.getElementsByClassName('item-price');
+            for (let i = 0; i < itemNames.length; i++) {
+                bill += `Item: ${itemNames[i].value} | Quantity: ${itemQuantities[i].value} | Price: ${itemPrices[i].value}\n`;
+            }
+            bill += `Total: ${document.getElementById('total').innerText}`;
+            alert(bill);
+        }
+        function printBill() {
+            window.print();
+        }
+    </script>
 </body>
 </html>
