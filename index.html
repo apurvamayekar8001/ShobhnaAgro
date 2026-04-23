@@ -9,23 +9,25 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Shobhna Agro">
 <meta name="theme-color" content="#2D6A2D">
-<meta name="description" content="Ratnagiri Alphonso Mango Bill Generator">
 <link rel="manifest" href="/ShobhnaAgro/manifest.json">
 <link rel="apple-touch-icon" href="/ShobhnaAgro/icon-192.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/ShobhnaAgro/icon-192.png">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
-:root{--mango:#F5A623;--mango-dark:#D4830A;--mango-light:#FFF3D6;--green:#2D6A2D;--green-dark:#1B4D1B;--green-light:#E8F5E9;--leaf:#4CAF50;--text:#1A1A1A;--subtle:#6B6B6B;--border:#E8D9B0;--white:#FFFDF5;--shadow:0 4px 24px rgba(45,106,45,0.12);}
+:root{
+  --mango:#F5A623;--mango-dark:#D4830A;--mango-light:#FFF3D6;
+  --green:#2D6A2D;--green-dark:#1B4D1B;--green-light:#E8F5E9;--leaf:#4CAF50;
+  --text:#1A1A1A;--subtle:#6B6B6B;--border:#E8D9B0;--white:#FFFDF5;
+  --shadow:0 4px 24px rgba(45,106,45,0.12);
+}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-body{font-family:'DM Sans',sans-serif;background:linear-gradient(135deg,#F0F9F0 0%,#FFF8E7 100%);min-height:100vh;color:var(--text);padding-bottom:calc(90px + env(safe-area-inset-bottom));}
+body{font-family:'Roboto',sans-serif;background:linear-gradient(135deg,#F0F9F0 0%,#FFF8E7 100%);min-height:100vh;color:var(--text);padding-bottom:calc(90px + env(safe-area-inset-bottom));}
 
-/* ── Nav Tabs ── */
+/* ── Tab Bar ── */
 .tab-bar{display:flex;background:var(--green-dark);padding:0 0 env(safe-area-inset-bottom);position:fixed;bottom:0;left:0;right:0;z-index:200;}
-.tab-btn{flex:1;padding:12px 6px 10px;border:none;background:none;color:rgba(255,255,255,0.6);font-family:'DM Sans',sans-serif;font-size:0.72rem;font-weight:600;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:color 0.2s;}
+.tab-btn{flex:1;padding:12px 6px 10px;border:none;background:none;color:rgba(255,255,255,0.6);font-family:'Roboto',sans-serif;font-size:0.72rem;font-weight:500;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:color 0.2s;}
 .tab-btn.active{color:var(--mango);}
 .tab-icon{font-size:1.2rem;}
-
-/* ── Screens ── */
 .screen{display:none;}.screen.active{display:block;}
 
 /* ── Install Banner ── */
@@ -33,8 +35,8 @@ body{font-family:'DM Sans',sans-serif;background:linear-gradient(135deg,#F0F9F0 
 #installBanner.show{display:flex;}
 .install-row{display:flex;align-items:center;gap:10px;}.install-icon{font-size:1.8rem;}.install-text{flex:1;}.install-text strong{display:block;font-size:0.9rem;}.install-text span{font-size:0.75rem;opacity:0.8;}
 .install-btns{display:flex;gap:8px;}
-.btn-install{flex:1;padding:10px 14px;border:none;border-radius:10px;background:var(--mango);color:#fff;font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;}
-.btn-dismiss{padding:10px 14px;border:1.5px solid rgba(255,255,255,0.4);border-radius:10px;background:transparent;color:rgba(255,255,255,0.8);font-family:'DM Sans',sans-serif;font-size:0.88rem;cursor:pointer;}
+.btn-install{flex:1;padding:10px 14px;border:none;border-radius:10px;background:var(--mango);color:#fff;font-family:'Roboto',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;}
+.btn-dismiss{padding:10px 14px;border:1.5px solid rgba(255,255,255,0.4);border-radius:10px;background:transparent;color:rgba(255,255,255,0.8);font-family:'Roboto',sans-serif;font-size:0.88rem;cursor:pointer;}
 
 /* iOS hint */
 #iosHint{display:none;position:fixed;bottom:60px;left:0;right:0;z-index:300;background:#1C1C1E;color:#fff;padding:16px;border-radius:16px 16px 0 0;box-shadow:0 -4px 20px rgba(0,0,0,0.3);}
@@ -48,9 +50,9 @@ body{font-family:'DM Sans',sans-serif;background:linear-gradient(135deg,#F0F9F0 
 .app-header::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:radial-gradient(circle,rgba(245,166,35,0.25) 0%,transparent 70%);border-radius:50%;}
 .brand-row{display:flex;align-items:center;justify-content:center;gap:12px;}
 .mango-icon{font-size:2.6rem;}
-.brand-name{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:var(--mango);text-shadow:0 2px 8px rgba(0,0,0,0.3);}
+.brand-name{font-family:'Roboto',sans-serif;font-size:1.8rem;font-weight:900;color:var(--mango);text-shadow:0 2px 8px rgba(0,0,0,0.3);}
 .brand-sub{color:rgba(255,255,255,0.7);font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;margin-top:2px;}
-.brand-alphonso{color:var(--mango);font-size:0.82rem;font-weight:600;margin-top:3px;}
+.brand-alphonso{color:var(--mango);font-size:0.82rem;font-weight:500;margin-top:3px;}
 .brand-phones{margin-top:8px;color:rgba(255,255,255,0.85);font-size:0.82rem;}
 .brand-phones span{color:var(--mango);font-weight:700;}
 
@@ -59,21 +61,21 @@ body{font-family:'DM Sans',sans-serif;background:linear-gradient(135deg,#F0F9F0 
 
 /* ── Card ── */
 .card{background:#fff;border-radius:18px;box-shadow:var(--shadow);padding:18px 16px;margin-bottom:14px;border:1px solid var(--border);}
-.card-title{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--green);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.card-title{font-family:'Roboto',sans-serif;font-size:1rem;font-weight:700;color:var(--green);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
 
 /* ── Field labels ── */
 .field-label{font-size:0.72rem;font-weight:700;color:var(--subtle);letter-spacing:0.8px;text-transform:uppercase;margin-bottom:6px;margin-top:14px;display:block;}
 .field-label:first-of-type{margin-top:0;}
 
 /* ── Inputs ── */
-input[type="text"],input[type="number"],input[type="tel"],textarea{width:100%;padding:14px;border:1.5px solid var(--border);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:1rem;color:var(--text);background:var(--white);outline:none;transition:border-color 0.2s,box-shadow 0.2s;-webkit-appearance:none;appearance:none;}
+input[type="text"],input[type="number"],input[type="tel"],textarea{width:100%;padding:14px;border:1.5px solid var(--border);border-radius:12px;font-family:'Roboto',sans-serif;font-size:1rem;color:var(--text);background:var(--white);outline:none;transition:border-color 0.2s,box-shadow 0.2s;-webkit-appearance:none;appearance:none;}
 input:focus,textarea:focus{border-color:var(--mango);box-shadow:0 0 0 3px rgba(245,166,35,0.15);}
 textarea{resize:none;min-height:72px;}
 
 /* ── Custom Select ── */
 .custom-select-wrap{position:relative;width:100%;}
 .custom-select-wrap::after{content:'▼';position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:0.75rem;color:var(--mango-dark);pointer-events:none;}
-.custom-select-wrap select{width:100%;padding:14px 40px 14px 14px;border:1.5px solid var(--border);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:1rem;color:var(--text);background:var(--white);outline:none;-webkit-appearance:none;appearance:none;cursor:pointer;transition:border-color 0.2s,box-shadow 0.2s;}
+.custom-select-wrap select{width:100%;padding:14px 40px 14px 14px;border:1.5px solid var(--border);border-radius:12px;font-family:'Roboto',sans-serif;font-size:1rem;color:var(--text);background:var(--white);outline:none;-webkit-appearance:none;appearance:none;cursor:pointer;transition:border-color 0.2s,box-shadow 0.2s;}
 .custom-select-wrap select:focus{border-color:var(--mango);box-shadow:0 0 0 3px rgba(245,166,35,0.15);}
 
 /* ── Item Card ── */
@@ -83,18 +85,18 @@ textarea{resize:none;min-height:72px;}
 .item-remove-btn{background:#FFE5E5;border:none;color:#E53E3E;padding:5px 12px;border-radius:20px;font-size:0.78rem;font-weight:600;cursor:pointer;}
 .item-3col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px;}
 .mini-label{font-size:0.68rem;font-weight:700;color:var(--subtle);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:4px;}
-.mini-input{width:100%;padding:11px 10px;border:1.5px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.95rem;color:var(--text);background:var(--white);outline:none;text-align:center;-webkit-appearance:none;appearance:none;transition:border-color 0.2s,box-shadow 0.2s;}
+.mini-input{width:100%;padding:11px 10px;border:1.5px solid var(--border);border-radius:10px;font-family:'Roboto',sans-serif;font-size:0.95rem;color:var(--text);background:var(--white);outline:none;text-align:center;-webkit-appearance:none;appearance:none;transition:border-color 0.2s,box-shadow 0.2s;}
 .mini-input:focus{border-color:var(--mango);box-shadow:0 0 0 3px rgba(245,166,35,0.12);}
 .item-total-box{padding:11px 10px;border:1.5px solid var(--leaf);border-radius:10px;background:var(--green-light);text-align:center;font-size:0.95rem;font-weight:700;color:var(--green);}
 
 /* ── Add Item Btn ── */
-.add-item-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;background:var(--mango-light);border:1.5px dashed var(--mango);border-radius:12px;color:var(--mango-dark);font-family:'DM Sans',sans-serif;font-size:0.92rem;font-weight:600;cursor:pointer;transition:background 0.2s;margin-top:4px;}
+.add-item-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;background:var(--mango-light);border:1.5px dashed var(--mango);border-radius:12px;color:var(--mango-dark);font-family:'Roboto',sans-serif;font-size:0.92rem;font-weight:500;cursor:pointer;transition:background 0.2s;margin-top:4px;}
 .add-item-btn:active{background:#FFE8A0;}
 
-/* ── Transport ── */
+/* ── Toggle ── */
 .toggle-row{display:flex;align-items:center;gap:12px;padding:10px 0;cursor:pointer;}
 .toggle-row input[type=checkbox]{width:22px;height:22px;cursor:pointer;accent-color:var(--green);flex-shrink:0;}
-.toggle-label{font-size:0.92rem;color:var(--text);font-weight:500;}
+.toggle-label{font-size:0.92rem;color:var(--text);font-weight:400;}
 
 /* ── Summary ── */
 .summary-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px dashed var(--border);font-size:0.92rem;}
@@ -102,12 +104,12 @@ textarea{resize:none;min-height:72px;}
 .summary-row .lbl{color:var(--subtle);}
 .summary-row .val{font-weight:600;}
 .grand-box{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:linear-gradient(135deg,var(--green) 0%,var(--green-dark) 100%);border-radius:14px;margin-top:12px;color:#fff;}
-.grand-box .lbl{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;}
-.grand-box .val{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;color:var(--mango);}
+.grand-box .lbl{font-family:'Roboto',sans-serif;font-size:1rem;font-weight:700;}
+.grand-box .val{font-family:'Roboto',sans-serif;font-size:1.4rem;font-weight:900;color:var(--mango);}
 
 /* ── Action Buttons ── */
 .action-row{display:flex;gap:10px;margin-top:16px;}
-.btn{flex:1;padding:15px 10px;border:none;border-radius:14px;font-family:'DM Sans',sans-serif;font-size:0.95rem;font-weight:700;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.btn{flex:1;padding:15px 10px;border:none;border-radius:14px;font-family:'Roboto',sans-serif;font-size:0.95rem;font-weight:700;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:6px;}
 .btn-preview{background:var(--mango-light);color:var(--mango-dark);border:1.5px solid var(--mango);}
 .btn-generate{background:linear-gradient(135deg,var(--mango) 0%,var(--mango-dark) 100%);color:#fff;box-shadow:0 4px 14px rgba(213,131,10,0.35);}
 .btn:active{transform:scale(0.97);}
@@ -119,12 +121,12 @@ textarea{resize:none;min-height:72px;}
 .bill-hdr{background:linear-gradient(135deg,var(--green) 0%,var(--green-dark) 100%);padding:20px;text-align:center;color:#fff;}
 .bill-brand-row{display:flex;align-items:center;justify-content:center;gap:10px;}
 .bill-mango{font-size:2rem;}
-.bill-co{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;color:var(--mango);}
+.bill-co{font-family:'Roboto',sans-serif;font-size:1.5rem;font-weight:900;color:var(--mango);}
 .bill-sub{font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;opacity:0.7;margin-top:2px;}
-.bill-alpha{font-size:0.8rem;font-weight:600;color:var(--mango);margin-top:3px;}
+.bill-alpha{font-size:0.8rem;font-weight:500;color:var(--mango);margin-top:3px;}
 .bill-ph{font-size:0.78rem;margin-top:6px;opacity:0.85;}
 .bill-ph span{color:var(--mango);font-weight:600;}
-.bill-meta{background:var(--mango-light);padding:10px 18px;display:flex;justify-content:space-between;font-size:0.75rem;border-bottom:1px solid var(--border);}
+.bill-meta{background:var(--mango-light);padding:10px 18px;display:flex;justify-content:space-between;font-size:0.75rem;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:4px;}
 .bill-meta span{color:var(--subtle);}
 .bill-meta strong{color:var(--text);}
 .bill-body{padding:16px 18px;}
@@ -142,41 +144,36 @@ textarea{resize:none;min-height:72px;}
 .bill-sum-row{display:flex;justify-content:space-between;padding:4px 0;font-size:0.83rem;color:var(--subtle);}
 .bill-sum-row span:last-child{font-weight:600;color:var(--text);}
 .bill-grand{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,var(--green) 0%,var(--green-dark) 100%);border-radius:10px;padding:12px 16px;margin-top:10px;color:#fff;}
-.bill-grand-lbl{font-family:'Playfair Display',serif;font-size:0.95rem;font-weight:700;}
-.bill-grand-val{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;color:var(--mango);}
+.bill-grand-lbl{font-family:'Roboto',sans-serif;font-size:0.95rem;font-weight:700;}
+.bill-grand-val{font-family:'Roboto',sans-serif;font-size:1.4rem;font-weight:900;color:var(--mango);}
 .bill-foot{text-align:center;padding:12px 16px 14px;font-size:0.72rem;color:var(--subtle);border-top:1px dashed var(--border);}
 .bill-foot strong{color:var(--green);}
 .modal-btns{display:flex;gap:8px;padding:0 16px 16px;}
-.mbtn{flex:1;padding:13px 6px;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;}
+.mbtn{flex:1;padding:13px 6px;border:none;border-radius:12px;font-family:'Roboto',sans-serif;font-size:0.85rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;}
 .mbtn:active{opacity:0.85;}
 .mbtn:disabled{opacity:0.6;cursor:not-allowed;}
 .mbtn-close{background:#f0f0f0;color:var(--subtle);}
-.mbtn-download{background:var(--mango-light);color:var(--mango-dark);}
 .mbtn-share{background:linear-gradient(135deg,#25D366 0%,#128C7E 100%);color:#fff;flex:2;}
 
 /* ── History Screen ── */
+.stats-bar{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;}
+.stat-box{background:#fff;border-radius:14px;padding:12px;text-align:center;border:1px solid var(--border);box-shadow:var(--shadow);}
+.stat-val{font-family:'Roboto',sans-serif;font-size:1.1rem;font-weight:900;color:var(--green);}
+.stat-lbl{font-size:0.68rem;color:var(--subtle);margin-top:2px;text-transform:uppercase;letter-spacing:0.5px;}
 .history-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
-.history-header h2{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--green);}
-.export-btn{padding:8px 14px;border:none;border-radius:10px;background:linear-gradient(135deg,var(--green) 0%,var(--green-dark) 100%);color:#fff;font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:5px;}
-.clear-btn{padding:8px 12px;border:none;border-radius:10px;background:#FFE5E5;color:#E53E3E;font-family:'DM Sans',sans-serif;font-size:0.78rem;font-weight:600;cursor:pointer;}
-
-.bill-record{background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:14px 16px;margin-bottom:10px;border:1px solid var(--border);cursor:pointer;transition:box-shadow 0.2s;}
-.bill-record:active{box-shadow:none;}
+.history-header h2{font-family:'Roboto',sans-serif;font-size:1.1rem;font-weight:700;color:var(--green);}
+.export-btn{padding:8px 14px;border:none;border-radius:10px;background:linear-gradient(135deg,var(--green) 0%,var(--green-dark) 100%);color:#fff;font-family:'Roboto',sans-serif;font-size:0.8rem;font-weight:700;cursor:pointer;}
+.clear-btn{padding:8px 12px;border:none;border-radius:10px;background:#FFE5E5;color:#E53E3E;font-family:'Roboto',sans-serif;font-size:0.78rem;font-weight:600;cursor:pointer;}
+.bill-record{background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:14px 16px;margin-bottom:10px;border:1px solid var(--border);}
 .bill-record-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
 .bill-record-name{font-weight:700;font-size:0.95rem;color:var(--text);}
-.bill-record-amount{font-family:'Playfair Display',serif;font-weight:900;font-size:1.05rem;color:var(--green);}
-.bill-record-meta{font-size:0.75rem;color:var(--subtle);display:flex;gap:10px;}
+.bill-record-amount{font-family:'Roboto',sans-serif;font-weight:900;font-size:1.05rem;color:var(--green);}
+.bill-record-meta{font-size:0.75rem;color:var(--subtle);display:flex;gap:10px;flex-wrap:wrap;}
 .bill-record-no{font-weight:600;color:var(--mango-dark);}
-
+.bill-record-farm{font-weight:600;color:var(--green);}
 .empty-state{text-align:center;padding:60px 20px;color:var(--subtle);}
 .empty-state-icon{font-size:3rem;margin-bottom:12px;}
 .empty-state p{font-size:0.9rem;line-height:1.6;}
-
-/* stats bar */
-.stats-bar{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;}
-.stat-box{background:#fff;border-radius:14px;padding:12px;text-align:center;border:1px solid var(--border);box-shadow:var(--shadow);}
-.stat-val{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:900;color:var(--green);}
-.stat-lbl{font-size:0.68rem;color:var(--subtle);margin-top:2px;text-transform:uppercase;letter-spacing:0.5px;}
 
 /* ── Toast ── */
 .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;padding:11px 24px;border-radius:30px;font-size:0.88rem;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,0.2);z-index:400;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;}
@@ -189,31 +186,44 @@ textarea{resize:none;min-height:72px;}
 
 <div id="offlineBadge">📵 Offline</div>
 
-<!-- Install Banner -->
 <div id="installBanner">
   <div class="install-row"><span class="install-icon">🥭</span><div class="install-text"><strong>Install Shobhna Agro App</strong><span>Home screen access, works offline!</span></div></div>
   <div class="install-btns"><button class="btn-dismiss" onclick="dismissInstall()">Not now</button><button class="btn-install" onclick="doInstall()">📲 Install App</button></div>
 </div>
 
-<!-- iOS Hint -->
 <div id="iosHint">
   <button class="ios-hint-close" onclick="document.getElementById('iosHint').classList.remove('show')">✕</button>
   <div class="ios-hint-title">📲 Add to Home Screen</div>
   <div class="ios-hint-steps">1. Tap the <strong>Share</strong> button (□↑) at the bottom of Safari<br>2. Tap <strong>"Add to Home Screen"</strong><br>3. Tap <strong>Add</strong> — done! 🎉</div>
 </div>
 
-<!-- Header -->
 <div class="app-header">
   <div class="brand-row"><span class="mango-icon">🥭</span><div><div class="brand-name">Shobhna Agro</div><div class="brand-sub">Premium Mango Suppliers</div><div class="brand-alphonso">🌟 Ratnagiri Alphonso Mangoes</div></div></div>
   <div class="brand-phones">📞 <span>7517750152</span> &nbsp;|&nbsp; <span>9011651016</span></div>
 </div>
 
-<!-- ── SCREEN: New Bill ── -->
+<!-- NEW BILL SCREEN -->
 <div id="screen-bill" class="screen active">
 <div class="page">
 
   <div class="card">
-    <div class="card-title">👤 Customer Details</div>
+    <div class="card-title">🌿 Farm & Customer Details</div>
+
+    <span class="field-label">Farm Name</span>
+    <div class="custom-select-wrap">
+      <select id="farmSelect" onchange="onFarmChange()">
+        <option value="">-- Select Farm --</option>
+        <option value="Joshi">Joshi</option>
+        <option value="Navrangi">Navrangi</option>
+        <option value="Gurav">Gurav</option>
+        <option value="Shirgaon">Shirgaon</option>
+        <option value="Jaigad">Jaigad</option>
+      </select>
+    </div>
+
+    <span class="field-label">Bill Number</span>
+    <input type="text" id="billNoDisplay" placeholder="Select farm first" readonly style="background:#f5f5f5;color:var(--subtle);cursor:default;">
+
     <span class="field-label">Customer Name</span>
     <input type="text" id="custName" placeholder="Enter customer name" autocomplete="off">
     <span class="field-label">Address</span>
@@ -251,7 +261,7 @@ textarea{resize:none;min-height:72px;}
 </div>
 </div>
 
-<!-- ── SCREEN: History ── -->
+<!-- HISTORY SCREEN -->
 <div id="screen-history" class="screen">
 <div class="page">
   <div class="stats-bar">
@@ -270,14 +280,10 @@ textarea{resize:none;min-height:72px;}
 </div>
 </div>
 
-<!-- Bottom Tab Bar -->
+<!-- Tab Bar -->
 <div class="tab-bar">
-  <button class="tab-btn active" id="tab-bill" onclick="switchTab('bill')">
-    <span class="tab-icon">📝</span>New Bill
-  </button>
-  <button class="tab-btn" id="tab-history" onclick="switchTab('history')">
-    <span class="tab-icon">📋</span>History
-  </button>
+  <button class="tab-btn active" id="tab-bill" onclick="switchTab('bill')"><span class="tab-icon">📝</span>New Bill</button>
+  <button class="tab-btn" id="tab-history" onclick="switchTab('history')"><span class="tab-icon">📋</span>History</button>
 </div>
 
 <!-- Bill Preview Modal -->
@@ -287,7 +293,11 @@ textarea{resize:none;min-height:72px;}
       <div class="bill-brand-row"><span class="bill-mango">🥭</span><div><div class="bill-co">Shobhna Agro</div><div class="bill-sub">Premium Mango Suppliers</div><div class="bill-alpha">🌟 Ratnagiri Alphonso Mangoes</div></div></div>
       <div class="bill-ph">📞 <span>7517750152</span> &nbsp;|&nbsp; <span>9011651016</span></div>
     </div>
-    <div class="bill-meta"><span>Bill No: <strong id="billNo">–</strong></span><span>Date: <strong id="billDate">–</strong></span></div>
+    <div class="bill-meta">
+      <span>Bill No: <strong id="billNo">–</strong></span>
+      <span>Farm: <strong id="billFarm">–</strong></span>
+      <span>Date: <strong id="billDate">–</strong></span>
+    </div>
     <div class="bill-body">
       <div class="bill-cust">
         <div class="bill-cust-name" id="bName">–</div>
@@ -306,8 +316,7 @@ textarea{resize:none;min-height:72px;}
     </div>
     <div class="bill-foot">Thank you for choosing <strong>Shobhna Agro</strong>! 🥭<br>Fresh Ratnagiri Alphonso Mangoes, Delivered with Love.</div>
     <div class="modal-btns">
-      <button class="mbtn mbtn-close" onclick="closeModal()">✕</button>
-      <button class="mbtn mbtn-download" id="btnDownload" onclick="downloadBillImage()">💾 Save</button>
+      <button class="mbtn mbtn-close" onclick="closeModal()">✕ Close</button>
       <button class="mbtn mbtn-share" id="btnShare" onclick="shareBillImage()">📤 Share Image</button>
     </div>
   </div>
@@ -317,9 +326,7 @@ textarea{resize:none;min-height:72px;}
 
 <script>
 // ── Service Worker ──
-if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('/ShobhnaAgro/sw.js',{scope:'/ShobhnaAgro/'}).catch(e=>console.log('SW:',e));});}
-
-// ── Offline ──
+if('serviceWorker'in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('/ShobhnaAgro/sw.js',{scope:'/ShobhnaAgro/'}).catch(e=>console.log('SW:',e));});}
 window.addEventListener('online',()=>document.getElementById('offlineBadge').classList.remove('show'));
 window.addEventListener('offline',()=>document.getElementById('offlineBadge').classList.add('show'));
 
@@ -337,7 +344,38 @@ function switchTab(tab){
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('screen-'+tab).classList.add('active');
   document.getElementById('tab-'+tab).classList.add('active');
-  if(tab==='history') renderHistory();
+  if(tab==='history')renderHistory();
+}
+
+// ── Farm & Bill Number Logic ──
+// FARMS: prefix → full name
+const FARMS={
+  'Joshi':  {prefix:'Jo'},
+  'Navrangi':{prefix:'Na'},
+  'Gurav':  {prefix:'Gu'},
+  'Shirgaon':{prefix:'Sh'},
+  'Jaigad': {prefix:'Ja'}
+};
+
+function getFarmCounter(farm){
+  const key='billCounter_'+farm;
+  return parseInt(localStorage.getItem(key)||'0');
+}
+function incrementFarmCounter(farm){
+  const key='billCounter_'+farm;
+  const next=getFarmCounter(farm)+1;
+  localStorage.setItem(key,String(next));
+  return next;
+}
+function peekNextBillNo(farm){
+  if(!farm||!FARMS[farm])return'';
+  const next=getFarmCounter(farm)+1;
+  return FARMS[farm].prefix+'/'+next;
+}
+
+function onFarmChange(){
+  const farm=document.getElementById('farmSelect').value;
+  document.getElementById('billNoDisplay').value=farm?peekNextBillNo(farm):'';
 }
 
 // ── App Data ──
@@ -383,26 +421,38 @@ function refreshTotal(item){const el=document.getElementById('itotal-'+item.id);
 function recalc(){const sub=items.reduce((s,i)=>s+i.total,0);const tr=document.getElementById('transportCheck').checked?parseFloat(document.getElementById('transportAmt').value||0):0;const grand=sub+tr;document.getElementById('subtotalDisplay').textContent='₹ '+sub.toFixed(2);document.getElementById('transportDisplay').textContent='₹ '+tr.toFixed(2);document.getElementById('grandDisplay').textContent='₹ '+grand.toFixed(2);}
 function toggleTransport(){const on=document.getElementById('transportCheck').checked;document.getElementById('transportField').style.display=on?'block':'none';document.getElementById('transportRow').style.display=on?'flex':'none';recalc();}
 
-function billNo(){const d=new Date();return 'SA'+String(d.getFullYear()).slice(-2)+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0')+'-'+String(d.getHours()).padStart(2,'0')+String(d.getMinutes()).padStart(2,'0');}
 function billDate(){return new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});}
 function validItems(){return items.filter(i=>i.typeIdx!==''&&parseFloat(i.qty)>0&&parseFloat(i.rate)>0);}
 
 // ── Preview Bill ──
 let currentBillData=null;
+
 function previewBill(){
+  const farm=document.getElementById('farmSelect').value;
+  if(!farm){alert('Please select a Farm!');return;}
   const name=document.getElementById('custName').value.trim();
   if(!name){alert('Please enter customer name!');return;}
   if(!validItems().length){alert('Please fill Type, Qty and Rate for at least one item!');return;}
-  const bno=billNo(),bdate=billDate();
+
+  const bno=peekNextBillNo(farm);
+  const bdate=billDate();
+
   document.getElementById('billNo').textContent=bno;
+  document.getElementById('billFarm').textContent=farm;
   document.getElementById('billDate').textContent=bdate;
   document.getElementById('bName').textContent=name;
   document.getElementById('bAddr').textContent=document.getElementById('custAddress').value.trim();
   const mob=document.getElementById('custMobile').value.trim();
   document.getElementById('bMob').textContent=mob?'📱 '+mob:'';
+
   const tbody=document.getElementById('billBody');
   tbody.innerHTML='';
-  validItems().forEach(item=>{const tr=document.createElement('tr');tr.innerHTML=`<td>${TYPES[item.typeIdx]}</td><td>${parseFloat(item.qty)}</td><td>₹${parseFloat(item.rate).toFixed(2)}</td><td style="font-weight:700;color:#2D6A2D;">₹${item.total.toFixed(2)}</td>`;tbody.appendChild(tr);});
+  validItems().forEach(item=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${TYPES[item.typeIdx]}</td><td>${parseFloat(item.qty)}</td><td>₹${parseFloat(item.rate).toFixed(2)}</td><td style="font-weight:700;">₹${item.total.toFixed(2)}</td>`;
+    tbody.appendChild(tr);
+  });
+
   const sub=items.reduce((s,i)=>s+i.total,0);
   const tr=document.getElementById('transportCheck').checked?parseFloat(document.getElementById('transportAmt').value||0):0;
   const grand=sub+tr;
@@ -411,32 +461,34 @@ function previewBill(){
   document.getElementById('bTransRow').style.display=tr>0?'flex':'none';
   document.getElementById('bGrand').textContent='₹ '+grand.toFixed(2);
 
-  // Store bill data for saving
   currentBillData={
-    id:bno, date:bdate, timestamp:Date.now(),
-    name, addr:document.getElementById('custAddress').value.trim(), mob,
+    id:bno,farm,date:bdate,timestamp:Date.now(),
+    name,addr:document.getElementById('custAddress').value.trim(),mob,
     items:validItems().map(i=>({type:TYPES[i.typeIdx],qty:parseFloat(i.qty),rate:parseFloat(i.rate),total:i.total})),
-    subtotal:sub, transport:tr, grand
+    subtotal:sub,transport:tr,grand,saved:false
   };
   document.getElementById('billModal').classList.add('open');
 }
 
 function closeModal(){document.getElementById('billModal').classList.remove('open');}
 
-// ── Save Bill to History ──
+// ── Save Bill to History (only once per bill) ──
 function saveBillToHistory(){
-  if(!currentBillData)return;
+  if(!currentBillData||currentBillData.saved)return;
+  // Increment counter for this farm
+  incrementFarmCounter(currentBillData.farm);
+  currentBillData.saved=true;
+  // Update display for next bill
+  document.getElementById('billNoDisplay').value=peekNextBillNo(currentBillData.farm);
+  // Save to history
   const bills=getBills();
-  // avoid duplicate save same bill no
-  if(!bills.find(b=>b.id===currentBillData.id)){
-    bills.unshift(currentBillData);
-    localStorage.setItem('shobhna_bills',JSON.stringify(bills));
-  }
+  bills.unshift(currentBillData);
+  localStorage.setItem('shobhna_bills',JSON.stringify(bills));
 }
 
 function getBills(){try{return JSON.parse(localStorage.getItem('shobhna_bills')||'[]');}catch{return[];}}
 
-// ── History Screen ──
+// ── History ──
 function renderHistory(){
   const bills=getBills();
   const total=bills.reduce((s,b)=>s+b.grand,0);
@@ -446,10 +498,7 @@ function renderHistory(){
   document.getElementById('statTotal').textContent='₹'+Math.round(total).toLocaleString('en-IN');
   document.getElementById('statMonth').textContent='₹'+Math.round(monthTotal).toLocaleString('en-IN');
   const list=document.getElementById('billsList');
-  if(bills.length===0){
-    list.innerHTML=`<div class="empty-state"><div class="empty-state-icon">📋</div><p>No bills yet.<br>Create your first bill from the New Bill tab!</p></div>`;
-    return;
-  }
+  if(!bills.length){list.innerHTML=`<div class="empty-state"><div class="empty-state-icon">📋</div><p>No bills yet.<br>Create your first bill from the New Bill tab!</p></div>`;return;}
   list.innerHTML=bills.map(b=>`
     <div class="bill-record">
       <div class="bill-record-top">
@@ -458,6 +507,7 @@ function renderHistory(){
       </div>
       <div class="bill-record-meta">
         <span class="bill-record-no">${b.id}</span>
+        <span class="bill-record-farm">🌿 ${b.farm||'–'}</span>
         <span>${b.date}</span>
         <span>${b.items.length} item${b.items.length>1?'s':''}</span>
       </div>
@@ -465,220 +515,229 @@ function renderHistory(){
 }
 
 function clearHistory(){
-  if(confirm('Delete all bill history? This cannot be undone.')){
-    localStorage.removeItem('shobhna_bills');
-    renderHistory();
-    toast('History cleared');
-  }
-}
+  if(confirm('Delete all bill history? This cannot be undone.')){localStorage.removeItem('shobhna_bills');renderHistory();toast('History cleared');}}
 
-// ── Export CSV ──
 function exportCSV(){
   const bills=getBills();
-  if(bills.length===0){toast('No bills to export');return;}
-  const rows=[['Bill No','Date','Customer','Address','Mobile','Items','Subtotal','Transport','Total']];
+  if(!bills.length){toast('No bills to export');return;}
+  const rows=[['Bill No','Farm','Date','Customer','Address','Mobile','Items','Subtotal','Transport','Total']];
   bills.forEach(b=>{
-    const itemStr=b.items.map(i=>`${i.type} x${i.qty}@₹${i.rate}`).join(' | ');
-    rows.push([b.id,b.date,b.name,b.addr||'',b.mob||'',itemStr,b.subtotal.toFixed(2),b.transport.toFixed(2),b.grand.toFixed(2)]);
+    const itemStr=b.items.map(i=>`${i.type} x${i.qty}@Rs${i.rate}`).join(' | ');
+    rows.push([b.id,b.farm||'',b.date,b.name,b.addr||'',b.mob||'',itemStr,b.subtotal.toFixed(2),b.transport.toFixed(2),b.grand.toFixed(2)]);
   });
   const csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
-  const blob=new Blob([csv],{type:'text/csv'});
-  const url=URL.createObjectURL(blob);
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
   const fname=`Shobhna-Agro-Bills-${new Date().toISOString().slice(0,10)}.csv`;
-  if(navigator.share&&navigator.canShare({files:[new File([blob],fname,{type:'text/csv'})]})){
+  if(navigator.share&&navigator.canShare&&navigator.canShare({files:[new File([blob],fname,{type:'text/csv'})]})){
     navigator.share({files:[new File([blob],fname,{type:'text/csv'})],title:'Shobhna Agro Bills'}).catch(()=>{});
-  } else {
-    const a=document.createElement('a');a.href=url;a.download=fname;document.body.appendChild(a);a.click();document.body.removeChild(a);
-  }
+  }else{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=fname;document.body.appendChild(a);a.click();document.body.removeChild(a);}
   toast('CSV exported! ✓');
 }
 
-// ── Canvas Bill Image (Green Design) ──
+// ────────────────────────────────────────────
+// BLACK & WHITE CANVAS BILL IMAGE
+// ────────────────────────────────────────────
 function drawRoundRect(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();}
 
 function buildBillCanvas(){
-  const name=document.getElementById('custName').value.trim();
-  const addr=document.getElementById('custAddress').value.trim();
-  const mob=document.getElementById('custMobile').value.trim();
-  const sub=items.reduce((s,i)=>s+i.total,0);
-  const trAmt=document.getElementById('transportCheck').checked?parseFloat(document.getElementById('transportAmt').value||0):0;
-  const grand=sub+trAmt;
-  const vi=validItems();
-  const bno=currentBillData?currentBillData.id:billNo();
-  const bdate=currentBillData?currentBillData.date:billDate();
+  const farm=currentBillData.farm||'';
+  const name=currentBillData.name;
+  const addr=currentBillData.addr||'';
+  const mob=currentBillData.mob||'';
+  const sub=currentBillData.subtotal;
+  const trAmt=currentBillData.transport;
+  const grand=currentBillData.grand;
+  const vi=currentBillData.items;
+  const bno=currentBillData.id;
+  const bdate=currentBillData.date;
 
-  const W=750,PAD=40,colW=W-PAD*2,rowH=44;
+  const W=750,PAD=44,colW=W-PAD*2,rowH=44;
   const custLines=[name,addr,mob].filter(Boolean);
-  const custH=custLines.length*28+36;
+  const custH=custLines.length*26+32;
   const itemsH=vi.length*rowH+44;
-  const summaryH=(trAmt>0?2:1)*36+80;
-  const H=200+custH+24+itemsH+24+summaryH+80;
+  const summaryH=(trAmt>0?2:1)*34+80;
+  const H=220+custH+24+itemsH+24+summaryH+80;
 
   const canvas=document.createElement('canvas');
   const DPR=2;canvas.width=W*DPR;canvas.height=H*DPR;
   const ctx=canvas.getContext('2d');ctx.scale(DPR,DPR);
 
-  // Background
-  ctx.fillStyle='#FFFDF5';ctx.fillRect(0,0,W,H);
+  // ── White background ──
+  ctx.fillStyle='#FFFFFF';ctx.fillRect(0,0,W,H);
 
-  // Dashed top border
-  ctx.strokeStyle='#2D6A2D';ctx.lineWidth=4;ctx.setLineDash([10,6]);
-  ctx.beginPath();ctx.moveTo(0,2);ctx.lineTo(W,2);ctx.stroke();ctx.setLineDash([]);
+  // ── Dashed top border ──
+  ctx.strokeStyle='#111';ctx.lineWidth=3;ctx.setLineDash([10,6]);
+  ctx.beginPath();ctx.moveTo(0,3);ctx.lineTo(W,3);ctx.stroke();ctx.setLineDash([]);
 
-  let y=8;
-  // Green header
-  const headerH=170;
-  const hGrad=ctx.createLinearGradient(0,y,W,y+headerH);
-  hGrad.addColorStop(0,'#2D6A2D');hGrad.addColorStop(1,'#1B4D1B');
-  ctx.fillStyle=hGrad;ctx.fillRect(0,y,W,headerH);
+  let y=14;
 
-  // Mango icon — white silhouette
-  const mx=W/2-130,my=y+20;
-  ctx.fillStyle='rgba(255,255,255,0.95)';
-  ctx.beginPath();ctx.ellipse(mx+18,my+36,18,22,0,0,Math.PI*2);ctx.fill();
-  ctx.fillStyle='rgba(255,255,255,0.5)';
-  ctx.beginPath();ctx.ellipse(mx+12,my+28,6,8,0,0,Math.PI*2);ctx.fill();
-  ctx.fillStyle='#4CAF50';
-  ctx.fillRect(mx+16,my+8,4,10);
-  ctx.beginPath();ctx.moveTo(mx+20,my+10);ctx.quadraticCurveTo(mx+38,my,mx+33,my+18);ctx.quadraticCurveTo(mx+26,my+14,mx+20,my+10);ctx.fill();
+  // ── Mango icon (B&W silhouette) ──
+  const mx=W/2-110,my=y+8;
+  // body
+  ctx.fillStyle='#222';
+  ctx.beginPath();ctx.ellipse(mx+18,my+28,16,20,0,0,Math.PI*2);ctx.fill();
+  // highlight
+  ctx.fillStyle='#666';
+  ctx.beginPath();ctx.ellipse(mx+12,my+22,5,7,0,0,Math.PI*2);ctx.fill();
+  // stem
+  ctx.fillStyle='#111';ctx.fillRect(mx+16,my+6,4,8);
+  // leaf
+  ctx.fillStyle='#111';ctx.beginPath();ctx.moveTo(mx+20,my+8);ctx.quadraticCurveTo(mx+36,my-2,mx+32,my+14);ctx.quadraticCurveTo(mx+26,my+11,mx+20,my+8);ctx.fill();
 
-  // Company name
-  ctx.fillStyle='#F5A623';ctx.font='bold 38px Georgia,serif';ctx.textAlign='left';
-  ctx.fillText('Shobhna Agro',W/2-86,y+58);
-  ctx.fillStyle='rgba(255,255,255,0.7)';ctx.font='14px Arial,sans-serif';
-  ctx.fillText('PREMIUM MANGO SUPPLIERS',W/2-86,y+80);
-  ctx.fillStyle='#F5A623';ctx.font='600 16px Arial,sans-serif';
-  ctx.fillText('\u2605 Ratnagiri Alphonso Mangoes',W/2-86,y+104);
-  ctx.fillStyle='rgba(255,255,255,0.85)';ctx.font='15px Arial,sans-serif';
-  ctx.textAlign='center';
-  ctx.fillText('\u260E  7517750152  |  9011651016',W/2,y+136);
+  // ── Company name ──
+  ctx.fillStyle='#111';ctx.font='bold 36px Roboto,Arial,sans-serif';ctx.textAlign='left';
+  ctx.fillText('Shobhna Agro',W/2-82,y+52);
+  ctx.fillStyle='#555';ctx.font='500 12px Roboto,Arial,sans-serif';
+  ctx.fillText('PREMIUM MANGO SUPPLIERS',W/2-82,y+72);
+  ctx.fillStyle='#333';ctx.font='500 14px Roboto,Arial,sans-serif';
+  ctx.fillText('Ratnagiri Alphonso Mangoes',W/2-82,y+92);
+  ctx.fillStyle='#444';ctx.font='14px Roboto,Arial,sans-serif';ctx.textAlign='center';
+  ctx.fillText('Ph: 7517750152  |  9011651016',W/2,y+116);
 
-  y+=headerH;
+  y+=136;
 
-  // Mango-light meta bar
-  ctx.fillStyle='#FFF3D6';ctx.fillRect(0,y,W,44);
-  ctx.strokeStyle='#E8D9B0';ctx.lineWidth=1;
-  ctx.beginPath();ctx.moveTo(0,y+44);ctx.lineTo(W,y+44);ctx.stroke();
-  ctx.fillStyle='#7A5500';ctx.font='13px Arial,sans-serif';ctx.textAlign='left';
-  ctx.fillText('Bill No: ',PAD,y+27);
-  ctx.fillStyle='#3A2800';ctx.font='bold 13px Arial,sans-serif';
-  ctx.fillText(bno,PAD+58,y+27);
-  ctx.fillStyle='#7A5500';ctx.font='13px Arial,sans-serif';ctx.textAlign='right';
-  ctx.fillText('Date: ',W-PAD-90,y+27);
-  ctx.fillStyle='#3A2800';ctx.font='bold 13px Arial,sans-serif';
-  ctx.fillText(bdate,W-PAD,y+27);
-  y+=44+16;
+  // ── Thin separator ──
+  ctx.strokeStyle='#aaa';ctx.lineWidth=0.8;ctx.setLineDash([5,4]);
+  ctx.beginPath();ctx.moveTo(PAD,y);ctx.lineTo(W-PAD,y);ctx.stroke();ctx.setLineDash([]);
+  y+=16;
 
-  // Customer box
-  drawRoundRect(ctx,PAD,y,colW,custH,10);
-  ctx.fillStyle='#E8F5E9';ctx.fill();
-  ctx.fillStyle='#4CAF50';ctx.fillRect(PAD,y+10,3,custH-20);
-  let cy=y+28;
-  ctx.fillStyle='#2D6A2D';ctx.font='bold 18px Arial,sans-serif';ctx.textAlign='left';
-  ctx.fillText(name,PAD+16,cy);cy+=28;
-  if(addr){ctx.fillStyle='#555';ctx.font='14px Arial,sans-serif';ctx.fillText(addr,PAD+16,cy);cy+=26;}
-  if(mob){ctx.fillStyle='#555';ctx.font='14px Arial,sans-serif';ctx.fillText('Mob: '+mob,PAD+16,cy);}
-  y+=custH+20;
+  // ── Bill No / Farm / Date row ──
+  ctx.fillStyle='#555';ctx.font='13px Roboto,Arial,sans-serif';ctx.textAlign='left';
+  ctx.fillText('Bill No: ',PAD,y);
+  ctx.fillStyle='#111';ctx.font='bold 13px Roboto,Arial,sans-serif';
+  ctx.fillText(bno,PAD+56,y);
+  ctx.fillStyle='#555';ctx.font='13px Roboto,Arial,sans-serif';
+  ctx.fillText('Farm: ',PAD+160,y);
+  ctx.fillStyle='#111';ctx.font='bold 13px Roboto,Arial,sans-serif';
+  ctx.fillText(farm,PAD+200,y);
+  ctx.fillStyle='#555';ctx.font='13px Roboto,Arial,sans-serif';ctx.textAlign='right';
+  ctx.fillText('Date: '+bdate,W-PAD,y);
 
-  // Table header
+  y+=16;
+  // separator
+  ctx.strokeStyle='#aaa';ctx.lineWidth=0.8;ctx.setLineDash([5,4]);
+  ctx.beginPath();ctx.moveTo(PAD,y);ctx.lineTo(W-PAD,y);ctx.stroke();ctx.setLineDash([]);
+  y+=16;
+
+  // ── Customer box ──
+  drawRoundRect(ctx,PAD,y,colW,custH,8);
+  ctx.fillStyle='#F5F5F5';ctx.fill();
+  ctx.strokeStyle='#111';ctx.lineWidth=1;ctx.stroke();
+  ctx.fillStyle='#111';ctx.fillRect(PAD,y+8,3,custH-16);
+
+  let cy=y+26;
+  ctx.fillStyle='#111';ctx.font='bold 17px Roboto,Arial,sans-serif';ctx.textAlign='left';
+  ctx.fillText(name,PAD+16,cy);cy+=26;
+  if(addr){ctx.fillStyle='#444';ctx.font='14px Roboto,Arial,sans-serif';ctx.fillText(addr,PAD+16,cy);cy+=24;}
+  if(mob){ctx.fillStyle='#444';ctx.font='14px Roboto,Arial,sans-serif';ctx.fillText('Mob: '+mob,PAD+16,cy);}
+  y+=custH+18;
+
+  // ── Items table header ──
   const tblW=colW;
-  const cols=[tblW*0.35,tblW*0.15,tblW*0.25,tblW*0.25];
+  const cols=[tblW*0.34,tblW*0.14,tblW*0.25,tblW*0.27];
   const colX=[PAD,PAD+cols[0],PAD+cols[0]+cols[1],PAD+cols[0]+cols[1]+cols[2]];
-  ctx.fillStyle='#2D6A2D';ctx.fillRect(PAD,y,tblW,44);
-  const headers=['Type','Qty','Rate (\u20B9)','Total (\u20B9)'];
-  ctx.fillStyle='#fff';ctx.font='bold 13px Arial,sans-serif';
-  headers.forEach((h,i)=>{ctx.textAlign=i===0?'left':'center';const cx=i===0?colX[i]+12:colX[i]+cols[i]/2;ctx.fillText(h,cx,y+28);});
-  y+=44;
 
+  ctx.fillStyle='#111';ctx.fillRect(PAD,y,tblW,40);
+  const headers=['Type','Qty','Rate (\u20B9)','Total (\u20B9)'];
+  ctx.fillStyle='#fff';ctx.font='bold 13px Roboto,Arial,sans-serif';
+  headers.forEach((h,i)=>{ctx.textAlign=i===0?'left':'center';const cx=i===0?colX[i]+12:colX[i]+cols[i]/2;ctx.fillText(h,cx,y+26);});
+  y+=40;
+
+  // ── Table rows ──
   vi.forEach((item,idx)=>{
     const rowY=y+idx*rowH;
-    ctx.fillStyle=idx%2===0?'#FFFFFF':'#F5FAF5';
+    ctx.fillStyle=idx%2===0?'#FFFFFF':'#F5F5F5';
     ctx.fillRect(PAD,rowY,tblW,rowH);
-    ctx.strokeStyle='#E8D9B0';ctx.lineWidth=0.5;
+    ctx.strokeStyle='#ccc';ctx.lineWidth=0.5;
     ctx.beginPath();ctx.moveTo(PAD,rowY+rowH);ctx.lineTo(PAD+tblW,rowY+rowH);ctx.stroke();
-    const cells=[TYPES[item.typeIdx],String(parseFloat(item.qty)),'\u20B9'+parseFloat(item.rate).toFixed(2),'\u20B9'+item.total.toFixed(2)];
+    const cells=[item.type,String(item.qty),'\u20B9'+item.rate.toFixed(2),'\u20B9'+item.total.toFixed(2)];
     cells.forEach((cell,i)=>{
       ctx.textAlign=i===0?'left':'center';
       const cx=i===0?colX[i]+12:colX[i]+cols[i]/2;
-      ctx.fillStyle=i===3?'#2D6A2D':'#1A1A1A';
-      ctx.font=i===3?'bold 14px Arial,sans-serif':'14px Arial,sans-serif';
+      ctx.fillStyle='#111';
+      ctx.font=i===3?'bold 14px Roboto,Arial,sans-serif':'14px Roboto,Arial,sans-serif';
       ctx.fillText(cell,cx,rowY+27);
     });
   });
   y+=vi.length*rowH;
-  // Table border
-  ctx.strokeStyle='#E8D9B0';ctx.lineWidth=1;
-  ctx.strokeRect(PAD,y-vi.length*rowH-44,tblW,vi.length*rowH+44);
-  y+=20;
+  // table border
+  ctx.strokeStyle='#ccc';ctx.lineWidth=1;ctx.strokeRect(PAD,y-vi.length*rowH-40,tblW,vi.length*rowH+40);
+  y+=18;
 
-  // Summary
-  ctx.strokeStyle='#E8D9B0';ctx.lineWidth=1;
-  ctx.beginPath();ctx.moveTo(PAD,y);ctx.lineTo(W-PAD,y);ctx.stroke();y+=16;
-  const drawRow=(lbl,val)=>{ctx.fillStyle='#6B6B6B';ctx.font='15px Arial,sans-serif';ctx.textAlign='left';ctx.fillText(lbl,PAD,y);ctx.fillStyle='#1A1A1A';ctx.font='600 15px Arial,sans-serif';ctx.textAlign='right';ctx.fillText(val,W-PAD,y);y+=36;};
+  // ── Summary ──
+  ctx.strokeStyle='#aaa';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(PAD,y);ctx.lineTo(W-PAD,y);ctx.stroke();y+=14;
+  const drawRow=(lbl,val)=>{
+    ctx.fillStyle='#666';ctx.font='15px Roboto,Arial,sans-serif';ctx.textAlign='left';ctx.fillText(lbl,PAD,y);
+    ctx.fillStyle='#111';ctx.font='600 15px Roboto,Arial,sans-serif';ctx.textAlign='right';ctx.fillText(val,W-PAD,y);
+    y+=34;
+  };
   drawRow('Subtotal','\u20B9 '+sub.toFixed(2));
   if(trAmt>0)drawRow('Transport Charges','\u20B9 '+trAmt.toFixed(2));
 
-  // Grand total green box
-  const gtH=62;
-  drawRoundRect(ctx,PAD,y,colW,gtH,12);
-  const gtGrad=ctx.createLinearGradient(0,y,W,y+gtH);
-  gtGrad.addColorStop(0,'#2D6A2D');gtGrad.addColorStop(1,'#1B4D1B');
-  ctx.fillStyle=gtGrad;ctx.fill();
-  ctx.fillStyle='#fff';ctx.font='bold 18px Georgia,serif';ctx.textAlign='left';
-  ctx.fillText('Total Amount to Pay',PAD+18,y+40);
-  ctx.fillStyle='#F5A623';ctx.font='bold 26px Georgia,serif';ctx.textAlign='right';
-  ctx.fillText('\u20B9 '+grand.toFixed(2),W-PAD-18,y+42);
-  y+=gtH+22;
+  // ── Grand Total box (black) ──
+  const gtH=60;
+  drawRoundRect(ctx,PAD,y,colW,gtH,10);
+  ctx.fillStyle='#111';ctx.fill();
+  ctx.fillStyle='#fff';ctx.font='bold 18px Roboto,Arial,sans-serif';ctx.textAlign='left';
+  ctx.fillText('Total Amount to Pay',PAD+18,y+38);
+  ctx.fillStyle='#fff';ctx.font='bold 24px Roboto,Arial,sans-serif';ctx.textAlign='right';
+  ctx.fillText('\u20B9 '+grand.toFixed(2),W-PAD-18,y+40);
+  y+=gtH+20;
 
-  // Footer
-  ctx.strokeStyle='#C8E6C8';ctx.lineWidth=1;ctx.setLineDash([6,4]);
-  ctx.beginPath();ctx.moveTo(PAD,y);ctx.lineTo(W-PAD,y);ctx.stroke();ctx.setLineDash([]);y+=18;
-  ctx.textAlign='center';ctx.fillStyle='#555';ctx.font='14px Arial,sans-serif';
-  ctx.fillText('Thank you for choosing Shobhna Agro!',W/2,y);y+=22;
-  ctx.fillStyle='#888';ctx.font='13px Arial,sans-serif';
+  // ── Footer ──
+  ctx.strokeStyle='#bbb';ctx.lineWidth=1;ctx.setLineDash([5,4]);
+  ctx.beginPath();ctx.moveTo(PAD,y);ctx.lineTo(W-PAD,y);ctx.stroke();ctx.setLineDash([]);y+=16;
+  ctx.textAlign='center';ctx.fillStyle='#555';ctx.font='14px Roboto,Arial,sans-serif';
+  ctx.fillText('Thank you for choosing Shobhna Agro!',W/2,y);y+=20;
+  ctx.fillStyle='#777';ctx.font='13px Roboto,Arial,sans-serif';
   ctx.fillText('Fresh Ratnagiri Alphonso Mangoes, Delivered with Love.',W/2,y);
 
-  // Dashed bottom border
-  ctx.strokeStyle='#2D6A2D';ctx.lineWidth=4;ctx.setLineDash([10,6]);
+  // ── Dashed bottom border ──
+  ctx.strokeStyle='#111';ctx.lineWidth=3;ctx.setLineDash([10,6]);
   ctx.beginPath();ctx.moveTo(0,H-4);ctx.lineTo(W,H-4);ctx.stroke();ctx.setLineDash([]);
 
   return canvas;
 }
 
 function canvasToBlob(canvas){return new Promise(resolve=>canvas.toBlob(resolve,'image/png'));}
+function triggerDownload(canvas,fname){const link=document.createElement('a');link.download=fname||'bill.png';link.href=canvas.toDataURL('image/png');document.body.appendChild(link);link.click();document.body.removeChild(link);}
 
 async function shareBillImage(){
   const btn=document.getElementById('btnShare');
   btn.disabled=true;btn.textContent='⏳ Generating...';
+  // Save to history & increment counter
   saveBillToHistory();
   try{
     const canvas=buildBillCanvas();
+    const fname=`Shobhna-Agro-Bill-${currentBillData.id.replace('/','_')}.png`;
     const blob=await canvasToBlob(canvas);
-    const fname=`Shobhna-Agro-Bill-${currentBillData?currentBillData.id:billNo()}.png`;
     const file=new File([blob],fname,{type:'image/png'});
+
+    // Always auto-save first
+    triggerDownload(canvas,fname);
+
+    // Then also open share sheet if supported
     if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
-      await navigator.share({files:[file],title:'Shobhna Agro Bill'});
-      toast('Shared! ✓');
-    } else {
-      triggerDownload(canvas,fname);
-      toast('Image saved! Share from Photos 📲');
+      try{
+        await navigator.share({files:[file],title:'Shobhna Agro Bill – '+currentBillData.id});
+        toast('Saved & Shared! ✓');
+      }catch(e){
+        if(e.name!=='AbortError')toast('Saved to device! ✓');
+        else toast('Saved to device! ✓');
+      }
+    }else{
+      toast('Bill image saved! ✓');
     }
-  }catch(err){if(err.name!=='AbortError')toast('Saved to device 📲');}
-  finally{btn.disabled=false;btn.textContent='📤 Share Image';}
+  }catch(err){
+    toast('Could not generate image');
+    console.error(err);
+  }finally{
+    btn.disabled=false;btn.textContent='📤 Share Image';
+  }
 }
 
-async function downloadBillImage(){
-  const btn=document.getElementById('btnDownload');
-  btn.disabled=true;btn.textContent='⏳ Saving...';
-  saveBillToHistory();
-  try{const canvas=buildBillCanvas();triggerDownload(canvas,`Shobhna-Agro-Bill-${currentBillData?currentBillData.id:billNo()}.png`);toast('Bill saved! ✓');}
-  catch(e){toast('Could not save image');}
-  finally{btn.disabled=false;btn.textContent='💾 Save';}
-}
-
-function triggerDownload(canvas,fname){const link=document.createElement('a');link.download=fname||'bill.png';link.href=canvas.toDataURL('image/png');document.body.appendChild(link);link.click();document.body.removeChild(link);}
-
-function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2200);}
+function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2500);}
 document.getElementById('billModal').addEventListener('click',function(e){if(e.target===this)closeModal();});
 addItem();
 </script>
